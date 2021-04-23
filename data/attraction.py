@@ -3,10 +3,12 @@ import json
 
 mydb = mysql.connector.connect(
     host="localhost",
-    user="root",
-    password="root",
+    user="debian-sys-maint",
+    password="IDMC3xtr1aBwTGlq",
     database="Attraction"
 )
+mycursor = mydb.cursor()
+mycursor.execute("CREATE TABLE attractions (id INT PRIMARY KEY, name VARCHAR(255),category VARCHAR(255),description TEXT,address TEXT,transport TEXT,mrt VARCHAR(255),latitude FLOAT,longitude FLOAT,images TEXT)")
 
 
 with open("data/taipei-attractions.json", mode="r", encoding="utf-8") as file:
@@ -31,12 +33,12 @@ for spot in spotlist:
             # print(type(img))
             images = images + "," + img
     # print(images)
-    # ins = "INSERT INTO attractions (id, name, category, description, address, transport, mrt, latitude, longitude, images) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-    # val = (ID, name, category, description, address,
-    #        transport, mrt, latitude, longitude, images)
-    # mycursor = mydb.cursor()
-    # mycursor.execute(ins, val)
-    # mydb.commit()
+    ins = "INSERT INTO attractions (id, name, category, description, address, transport, mrt, latitude, longitude, images) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    val = (ID, name, category, description, address,
+           transport, mrt, latitude, longitude, images)
+    mycursor = mydb.cursor()
+    mycursor.execute(ins, val)
+    mydb.commit()
 
 
 # mycursor = mydb.cursor()
