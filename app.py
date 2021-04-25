@@ -1,14 +1,17 @@
 from flask import *
 import mysql.connector
 import math
+from config import Config
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
+print(Config.db_user)
+print(Config.db_password)
 mydb = mysql.connector.connect(
     host="localhost",
-    user="root",
-    password="root",
+    user=Config.db_user,
+    password=Config.db_password,
     database="Attraction"
 )
 

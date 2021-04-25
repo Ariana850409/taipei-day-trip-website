@@ -1,17 +1,18 @@
 import mysql.connector
 import json
 
+
 mydb = mysql.connector.connect(
     host="localhost",
-    user="debian-sys-maint",
-    password="IDMC3xtr1aBwTGlq",
+    user="root",
+    password="root",
     database="Attraction"
 )
 mycursor = mydb.cursor()
 mycursor.execute("CREATE TABLE attractions (id INT PRIMARY KEY, name VARCHAR(255),category VARCHAR(255),description TEXT,address TEXT,transport TEXT,mrt VARCHAR(255),latitude FLOAT,longitude FLOAT,images TEXT)")
 
 
-with open("data/taipei-attractions.json", mode="r", encoding="utf-8") as file:
+with open("taipei-attractions.json", mode="r", encoding="utf-8") as file:
     data = json.load(file)
 spotlist = data["result"]["results"]
 for spot in spotlist:
