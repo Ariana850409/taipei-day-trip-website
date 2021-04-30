@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台北一日遊</title>
+    <link type="text/css" href="static/style.css" rel="stylesheet">
+</head>
+
+<body onload="getData();">
+    <div class="nav-space"></div>
+    <nav class="navbar">
+        <div class="nav-text">
+            <div class="header">台北一日遊</div>
+            <div class="desktop-menu">
+                <div>預定行程</div>
+                <div>登入/註冊</div>
+            </div>
+        </div>
+        </div>
+
+    </nav>
+    <div class="welcome">
+        <div>
+            <div>輕鬆享受台北一日悠閒</div>
+            <div>探索每個角落，體驗城市的深度旅遊行程</div>
+            <div class="wrap">
+                <input class="search-bar" type="text" name="search" placeholder="  輸入景點名稱查詢">
+                <button class="search-btn" onclick="keywordData();">
+                    <img src="static/icon/icon_search.png">
+                </button>
+            </div>
+        </div>
+        <img src="static/welcome1.png">
+    </div>
+    <main id="main">
+    </main>
+    <div class="footer">COPYRIGHT © 2021 台北一日遊</div>
+    <script type="text/javascript">
+        let getAPI = false;
+        let nextPage = 0;
+        let finalPage = -1;
+        let keyword = "";
+        function getData() {
+            if (getAPI == false) {
+                let req = new XMLHttpRequest();
+                req.open("get", "/api/attractions?page=" + nextPage + "&keyword=" + keyword);
+                req.onload = function () {
+                    let data = JSON.parse(this.responseText);
+                    console.log(data)
+                    nextPage = data.nextPage;
+                    if (nextPage == null) {
+                        finalPage = nextPage;
+                    }
+                    if (data.data.length == 0) {
+                        let main = document.querySelector("#main");
+                        let cell = document.createElement("div");
+                        cell.textContent = "查無結果";
+                        main.appendChild(cell);
+                    }
+                    if (data.data != null || nextPage != null) {
+                        for (let i = 0; i < data.data.length; i++) {
+                            let spotName = data.data[i].name;
+                            let firstPic = data.data[i].images[0];
+                            let mrtStation = data.data[i].mrt;
+                            let category = data.data[i].category;
+                            let main = document.querySelector("#main");
+                            let cell = document.createElement("div");
+                            cell.className = "box";
+                            main.appendChild(cell);
+                            let img = document.createElement("img");
+                            img.src = firstPic
+                            let title = document.createElement("div");
+                            title.textContent = spotName;
+                            let content = document.createElement("div");
+                            title.className = "title";
+                            content.className = "content";
+                            cell.appendChild(img);
+                            cell.appendChild(title);
+                            cell.appendChild(content);
+                            let mrt = document.createElement("p");
+                            let cat = document.createElement("p");
+                            mrt.textContent = mrtStation;
+                            cat.textContent = category;
+                            content.appendChild(mrt);
+                            content.appendChild(cat)
+                        };
+                    }
+                    getAPI = false;
+                };
+                req.send();
+            };
+        };
+        function bodyScroll(event) {
+            let scrollHeight = document.body.scrollHeight;
+            let innerHeight = window.innerHeight;
+            let scrollTop = document.documentElement.scrollTop + document.body.scrollTop;
+            let scrollBottom = scrollHeight - innerHeight - scrollTop;
+            if (scrollBottom < 100 && nextPage != finalPage) {
+                getData();
+                getAPI = true;
+            }
+        }
+        window.addEventListener("scroll", bodyScroll, false);
+        function keywordData() {
+            nextPage = 0;
+            keyword = document.querySelector(".search-bar").value;
+            let main = document.querySelector("#main");
+            main.innerHTML = "";
+            getData();
+        };
+
+
+    </script>
+</body>
+
+</html>
