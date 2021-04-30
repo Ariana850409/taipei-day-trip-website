@@ -6,8 +6,6 @@ app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-print(Config.db_user)
-print(Config.db_password)
 mydb = mysql.connector.connect(
     host="localhost",
     user=Config.db_user,
@@ -168,4 +166,4 @@ def attractionId(attractionId):
         }, sort_keys=False), mimetype="application/json"), 500
 
 
-app.run(host="0.0.0.0", port=3000)
+app.run(host="0.0.0.0", port=3000, debug=True)
