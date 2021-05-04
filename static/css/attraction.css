@@ -1,0 +1,227 @@
+#carousel{
+    position: relative;
+}
+
+.loader{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:12px solid #f3f3f3;
+    border-top:12px solid #4488997e;
+    animation:load 2s linear infinite;
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    transform: translateX(-50%);
+}
+
+@keyframes load
+{
+0%   { transform: rotate(0deg); }
+100% { transform:rotate(360deg); }
+}
+
+.spotImg{
+    width: 540px;
+    height: 406px;
+    margin: 0 15px;
+    border-radius: 5px;
+}
+
+#left-btn{
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    background-color:transparent;
+    border-style:none;
+    opacity: 0.7;
+}
+
+#right-btn{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    background-color:transparent;
+    border-style:none;
+    opacity: 0.7;
+}
+
+.dots{
+    display: flex;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.dot{
+    list-style: none;
+    width: 10px;
+    height: 10px;
+    background-color: black;
+    border-radius: 50%;
+    margin: 0 5px;
+    opacity: 0.8;
+    border: 1px solid #FFFFFF;
+}
+
+#main>div:nth-child(2){
+    width: 600px;
+    padding: 15px;
+    color: #666666;
+}
+
+.spotTitle{
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.spotMrt{
+    font-size: 16px;
+    margin: 15px 0;
+}
+
+.tour{
+    width: 600px;
+    height: 302px;
+    background: #E8E8E8;
+    border-radius: 5px;
+    padding-top: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.tour>*{
+    margin: 10px 20px;
+}
+
+.tour>p:nth-child(1){
+    font-weight: bold;
+}
+
+.tour span{
+    font-weight: bold;
+}
+
+.tour>div>label{
+    margin-right: 10px;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+.time-btn{
+    width: 18px;
+    height: 18px;
+    background-color: #448899;
+    display: inline-block;
+    border-radius: 50%;
+    border: 2px solid #FFFFFF;
+    vertical-align:bottom;
+    line-height: 22px;
+}
+
+#evening-btn{
+    background-color: white;
+}
+
+.tour span:last-child{
+    font-weight: normal;
+}
+
+.tour>button{
+    width: 154px;
+    height: 36px;
+    background-color: #448899;
+    border: 0px;
+    border-radius: 5px;
+    color: white;
+    font-size: 19px;
+}
+
+hr{
+    margin: 40px 0 ;
+}
+
+#main>div:nth-child(4){
+    color: #666666;
+    margin: 0 15px;
+
+}
+
+#main>div:nth-child(4)>p{
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+#main>div:nth-child(4)>div{
+    margin-bottom: 20px;
+}
+
+
+@media(max-width:1200px){
+    #carousel{
+        width: 45%;
+    }
+    .spotImg{
+        width: 95%;
+        object-fit: cover;
+    }
+    #left-btn{
+        position: absolute;
+        left: 15px;
+    }
+    #right-btn{
+        position: absolute;
+        right: 10px;
+    }
+    #main>div:nth-child(2){
+        width: 45%;
+    } 
+    .tour{
+        width: 100%;
+    }
+    hr{
+        width: 95%;
+    }
+    #main>div:nth-child(4){
+        margin: 0 30px;
+    }
+    .tour>*{
+        margin: 8px 10px;
+    }     
+}
+
+@media(max-width:600px){
+    #carousel{
+        width: 100%;
+        margin: 0;
+    }
+    .spotImg{
+        width: 100%;
+        border-radius: 0;
+        margin: 0;
+    }
+    #left-btn{
+        position: absolute;
+        left: 10px;
+    }
+    #right-btn{
+        position: absolute;
+        right: 10px;
+    }
+    #main>div:nth-child(2){
+        width: 100%;
+    }
+    .tour{
+        width: 100%;
+    }
+    #main>div:nth-child(4){
+        margin: 0 15px;
+    }
+    .tour>*{
+        margin: 10px 20px;
+    }    
+}
