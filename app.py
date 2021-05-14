@@ -2,7 +2,10 @@ from flask import *
 import mysql.connector
 import math
 from config import Config
+from flask import session
+
 app = Flask(__name__)
+app.secret_key = "abcdefghijk"
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
@@ -13,6 +16,16 @@ mydb = mysql.connector.connect(
     database="Attraction"
 )
 
+userdb = mysql.connector.connect(
+    host="localhost",
+    user=Config.db_user,
+    password=Config.db_password,
+    database="User"
+)
+
+mycursor = userdb.cursor()
+mycursor.execute(
+    "CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255),email VARCHAR(255),password VARCHAR(255))")
 
 # Pages
 
@@ -164,6 +177,87 @@ def attractionId(attractionId):
             "error": True,
             "message": "伺服器內部錯誤"
         }, sort_keys=False), mimetype="application/json"), 500
+
+
+@app.route("/api/user", methods=["GET", "POST", "PATCH", "DELETE"])
+def api_user():
+    if request.method == "GET":
+        loginState = session.get("signin")
+        if loginState != None:
+            mycursor = userdb.cursor()
+            mycursor.execute(
+                "SELECT id,name,email FROM users WHERE email = '{}'".format(loginState))
+            myresult = mycursor.fetchone()
+            return Response(json.dumps({
+                "data": {
+                    "id": myresult[0],
+                    "name": myresult[1],
+                    "email": myresult[2]
+                }
+            }, sort_keys=False), mimetype="application/json")
+        if loginState == None:
+            return Response(json.dumps({
+                "data": None
+            }, sort_keys=False), mimetype="application/json")
+    elif request.method == "POST":
+        try:
+            data = request.get_json()
+            registerName = data["name"]
+            registerEmail = data["email"]
+            registerPassword = data["password"]
+            mycursor = userdb.cursor()
+            mycursor.execute(
+                "SELECT email FROM users WHERE email = '{}'".format(registerEmail))
+            myresult = mycursor.fetchone()
+            if myresult != None:
+                return Response(json.dumps({
+                    "error": True,
+                    "message": "此電子郵件已註冊過帳戶"
+                }, sort_keys=False), mimetype="application/json"), 400
+            if myresult == None:
+                ins = "INSERT INTO users (name, email, password) VALUES (%s, %s, %s)"
+                val = (registerName, registerEmail, registerPassword)
+                mycursor.execute(ins, val)
+                userdb.commit()
+                return Response(json.dumps({
+                    "ok": True
+                }, sort_keys=False), mimetype="application/json")
+        except:
+            return Response(json.dumps({
+                "error": True,
+                "message": "伺服器內部錯誤"
+            }, sort_keys=False), mimetype="application/json"), 500
+
+    elif request.method == "PATCH":
+        try:
+            data = request.get_json()
+            loginEmail = data["email"]
+            loginPassword = data["password"]
+            mycursor = userdb.cursor()
+            mycursor.execute(
+                "SELECT email,password FROM users WHERE email = '{}'".format(loginEmail))
+            myresult = mycursor.fetchone()
+            if myresult != None and myresult[1] == loginPassword:
+                session["signin"] = myresult[0]
+                session.permanent = True
+                return Response(json.dumps({
+                    "ok": True,
+                }, sort_keys=False), mimetype="application/json")
+            else:
+                return Response(json.dumps({
+                    "error": True,
+                    "message": "電子郵件或密碼輸入錯誤"
+                }, sort_keys=False), mimetype="application/json"), 400
+        except:
+            return Response(json.dumps({
+                "error": True,
+                "message": "伺服器內部錯誤"
+            }, sort_keys=False), mimetype="application/json"), 500
+    elif request.method == "DELETE":
+        session.clear()
+        return Response(json.dumps({
+            "ok": True,
+        }, sort_keys=False), mimetype="application/json")
 
 
 app.run(host="0.0.0.0", port=3000, debug=True)

@@ -37,6 +37,22 @@ function attractionData() {
         }).catch((err) => {
             console.log('錯誤:', err);
         });
+    loginReady = document.getElementById("login-ready");
+    logoutReady = document.getElementById("logout-ready");
+    fetch('/api/user', {
+        method: 'GET',
+    })
+        .then(res => {
+            return res.json();
+        }).then(result => {
+            if (result.data != null) {
+                loginReady.style.display = "none";
+                logoutReady.style.display = "block";
+            } else if (result.data == null) {
+                loginReady.style.display = "block";
+                logoutReady.style.display = "none";
+            }
+        });
 }
 
 
@@ -96,3 +112,5 @@ function changeTime(n) {
             console.log('錯誤:', err);
         });
 }
+
+
