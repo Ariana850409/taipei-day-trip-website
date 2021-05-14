@@ -3,6 +3,111 @@ body{
     font-family: Noto Sans TC;
 }
 
+.shadow{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #000000;
+    opacity: 0.25;
+    z-index: 1000;
+    display: none;
+}
+
+.login{
+    position: fixed;
+    width: 340px;
+    left: 50%;
+    top: 80px;
+    transform: translateX(-50%);
+    background: #FFFFFF;
+    box-shadow: 0px 4px 60px #AAAAAA;
+    border-radius: 6px;
+    z-index: 1001;
+    display: none;
+}
+
+.login-div{
+    width: 340px;
+    height: 10px;
+    background: linear-gradient(270deg, #337788 0%, #70bbce 100%);
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
+}
+
+.login-p{
+    font-weight: bold;
+    font-size: 24px;
+    color: #666666;
+    text-align: center;
+    margin: 15px;
+    position: relative;
+}
+
+.login-img{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+}
+
+.login-input{
+    width: 310px;
+    height: 47px;
+    border: 1px solid #CCCCCC;
+    box-sizing: border-box;
+    border-radius: 5px;
+    margin: 0 15px 10px 15px;
+    font-size: 16px;
+}
+
+.login-btn{
+    width: 310px;
+    height: 47px;
+    background: #448899;
+    border-radius: 5px;
+    border: none;
+    margin: 0 15px 10px 15px;
+    font-size: 19px;
+    color: #FFFFFF;
+}
+
+.error{
+    text-align: center;
+    color: rgb(164, 35, 35);
+    margin-bottom: 10px;
+}
+
+#register-error{
+    display: none;
+}
+
+#register-success{
+    color: rgb(34, 193, 34);
+    display: none;
+}
+
+.login-p2{
+    margin: 0 15px 10px 15px;
+    text-align: center;
+    color: #666666;
+}
+
+.login-p2>span{
+    cursor: default;
+}
+
+.register{
+    position: fixed;
+    width: 340px;
+    left: 50%;
+    top: 80px;
+    transform: translateX(-50%);
+    background: #FFFFFF;
+    box-shadow: 0px 4px 60px #AAAAAA;
+    border-radius: 6px;
+    z-index: 1001;
+    display: none;
+}
+
 .nav-space{
     height: 54px;
 }
@@ -40,14 +145,24 @@ body{
 
 .desktop-menu>div{
     margin-right: 20px;
+    cursor: pointer;
 }
 
+#login-ready{
+    display: none;
+}
+
+#logout-ready{
+    display: none;
+}
 
 .welcome{
     width: 100%;
     height: 320px;
     background: linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);
     margin-bottom: 40px;
+    overflow: hidden;
+    position: relative;
 }
 
 .welcome>div{
@@ -107,7 +222,7 @@ body{
 .welcome>img{
     position: absolute;
     right: 200px;
-    top: 54px;
+    bottom: 0;
     z-index: 1;
 }
 
@@ -196,7 +311,6 @@ main>.box>.title{
         height: 300px;
         position: absolute;
         right: -64px;
-        top: 74px;
     }   
     .welcome>div{
         width: 100%;
@@ -217,9 +331,6 @@ main>.box>.title{
     .welcome>img{
         width: 350px;
         height: 200px;
-        position: absolute;
-        right: -64px;
-        top: 174px;
     }
     .search-bar{
         width: 230px;

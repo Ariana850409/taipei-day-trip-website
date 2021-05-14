@@ -9,6 +9,31 @@
 </head>
 
 <body onload="getData();">
+    <div class="shadow"></div>
+    <div class="login">
+        <div class="login-div"></div>
+        <p class="login-p">登入會員帳號
+            <img src="../static/icon/icon_close.png" class="login-img" onclick="loginData('close');">
+        </p>
+        <input class="login-input" type="text" id="login-email" placeholder="  輸入電子郵件">
+        <input class="login-input" type="text" id="login-password" placeholder="  輸入密碼">
+        <button class="login-btn" id="login-btn" onclick="login();">登入帳戶</button>
+        <div class="error" id="login-error"></div>
+        <p class="login-p2">還沒有帳戶？<span onclick="loginData('register');">點此註冊</span></p>
+    </div>
+    <div class="register">
+        <div class="login-div"></div>
+        <p class="login-p">註冊會員帳號
+            <img src="../static/icon/icon_close.png" class="login-img" onclick="loginData('close');">
+        </p>
+        <input class="login-input" type="text" id="register-name" placeholder="  輸入姓名">
+        <input class="login-input" type="text" id="register-email" placeholder="  輸入電子郵件">
+        <input class="login-input" type="text" id="register-password" placeholder="  輸入密碼">
+        <button class="login-btn" id="register-btn" onclick="register();">註冊新帳戶</button>
+        <div class="error" id="register-error"></div>
+        <div class="error" id="register-success">註冊成功，請登入系統</div>
+        <p class="login-p2">已經有帳戶了？<span onclick="loginData('login');">點此登入</span></p>
+    </div>
     <div class="nav-space"></div>
     <nav class="navbar">
         <div class="nav-text">
@@ -17,9 +42,9 @@
             </a>
             <div class="desktop-menu">
                 <div>預定行程</div>
-                <div>登入/註冊</div>
+                <div onclick="loginData('login');" id="login-ready">登入/註冊</div>
+                <div onclick="logout();" id="logout-ready">登出系統</div>
             </div>
-        </div>
         </div>
 
     </nav>
@@ -40,6 +65,8 @@
     </main>
     <div class="footer">COPYRIGHT © 2021 台北一日遊</div>
     <script type="text/javascript" src="../static/js/index.js"></script>
+    <script type="text/javascript" src="../static/js/login.js"></script>
+
 
 </body>
 
