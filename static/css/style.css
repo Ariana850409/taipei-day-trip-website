@@ -156,6 +156,10 @@ body{
     display: none;
 }
 
+.navbar+hr{
+    margin: 0 0 40px 0;
+}
+
 .welcome{
     width: 100%;
     height: 320px;
@@ -299,6 +303,9 @@ main>.box>.title{
     .nav-text{
         width: 100%;
     }
+    .navbar+hr{
+        width: 100%;
+    }    
     main{
         width: 100%;
     }

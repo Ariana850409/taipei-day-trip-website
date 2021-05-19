@@ -16,8 +16,8 @@
         <p class="login-p">登入會員帳號
             <img src="../static/icon/icon_close.png" class="login-img" onclick="loginData('close');">
         </p>
-        <input class="login-input" type="text" id="login-email" placeholder="  輸入電子郵件">
-        <input class="login-input" type="text" id="login-password" placeholder="  輸入密碼">
+        <input class="login-input" type="email" id="login-email" placeholder="  輸入電子郵件">
+        <input class="login-input" type="password" id="login-password" placeholder="  輸入密碼">
         <button class="login-btn" id="login-btn" onclick="login();">登入帳戶</button>
         <div class="error" id="login-error"></div>
         <p class="login-p2">還沒有帳戶？<span onclick="loginData('register');">點此註冊</span></p>
@@ -28,8 +28,8 @@
             <img src="../static/icon/icon_close.png" class="login-img" onclick="loginData('close');">
         </p>
         <input class="login-input" type="text" id="register-name" placeholder="  輸入姓名">
-        <input class="login-input" type="text" id="register-email" placeholder="  輸入電子郵件">
-        <input class="login-input" type="text" id="register-password" placeholder="  輸入密碼">
+        <input class="login-input" type="email" id="register-email" placeholder="  輸入電子郵件">
+        <input class="login-input" type="password" id="register-password" placeholder="  輸入密碼">
         <button class="login-btn" id="register-btn" onclick="register();">註冊新帳戶</button>
         <div class="error" id="register-error"></div>
         <div class="error" id="register-success"></div>
@@ -43,13 +43,14 @@
             </a>
 
             <div class="desktop-menu">
-                <div>預定行程</div>
+                <div onclick="booking();">預定行程</div>
                 <div onclick="loginData('login');" id="login-ready">登入/註冊</div>
                 <div onclick="logout();" id="logout-ready">登出系統</div>
             </div>
         </div>
         </div>
     </nav>
+    <hr size="1px" width="100%" color="#E8E8E8">
     <main id="main">
         <div id="carousel">
             <div class="loader" hidden></div>
@@ -67,23 +68,24 @@
                 <p>訂購導覽行程</p>
                 <p>以此景點為中心的一日行程，帶您探索城市角落故事</p>
                 <div>
-                    <span>選擇日期： </span><input type="date" class="date">
+                    <span>選擇日期： </span><input type="date" class="date" required="required">
+                    <span class="nodate">請選擇日期</span>
                 </div>
                 <div>
                     <span>選擇時間：</span>
                     <label for="morning" onclick="changeTime(0);">
                         <span class="time-btn" id="morning-btn"></span>
-                        <input type="radio" name="time" id="morning">上半天
+                        <input type="radio" name="time" id="morning" value="morning">上半天
                     </label>
-                    <label for="evening" onclick="changeTime(1);">
-                        <span class="time-btn" id="evening-btn"></span>
-                        <input type="radio" name="time" id="evening">下半天
+                    <label for="afternoon" onclick="changeTime(1);">
+                        <span class="time-btn" id="afternoon-btn"></span>
+                        <input type="radio" name="time" id="afternoon" value="afternoon">下半天
                     </label>
                 </div>
                 <div>
                     <span>導覽費用：</span><span class="money"> 新台幣 2000 元</span>
                 </div>
-                <button>開始預訂行程</button>
+                <button onclick="bookingStart();">開始預訂行程</button>
             </div>
         </div>
         <hr size="1px" width="1200px" color="#E8E8E8">

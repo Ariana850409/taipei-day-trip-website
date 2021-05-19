@@ -1,11 +1,13 @@
 let path = location.pathname;
 let url = '/api/' + path;
+let attractionId;
 function attractionData() {
     fetch(url, {})
         .then(res => {
             return res.json();
         }).then(result => {
-            console.log(result);
+            // console.log(result);
+            attractionId = result.data.id;
             let firstPic = result.data.images[0];
             let pics = result.data.images;
             let picnum = pics.length;
@@ -53,6 +55,18 @@ function attractionData() {
                 logoutReady.style.display = "none";
             }
         });
+    function minDate() {
+        let date_now = new Date();
+        let year = date_now.getFullYear();
+        let month = date_now.getMonth() + 1;
+        if (month < 10) {
+            month = "0" + month;
+        }
+        let date = date_now.getDate();
+        let today = year + "-" + month + "-" + date
+        document.querySelector('.date').setAttribute('min', today);
+    }
+    minDate();
 }
 
 
@@ -92,25 +106,69 @@ function changePic(n) {
 
 
 function changeTime(n) {
-    fetch(url, {})
-        .then(res => {
-            return res.json();
-        }).then(result => {
-            let morningBtn = document.querySelector("#morning-btn");
-            let eveningBtn = document.querySelector("#evening-btn");
-            let money = document.querySelector(".money");
-            if (n == 0) {
-                morningBtn.style.backgroundColor = "#448899";
-                eveningBtn.style.backgroundColor = "#FFFFFF";
-                money.textContent = "新台幣 2000 元";
-            } else if (n == 1) {
-                morningBtn.style.backgroundColor = "#FFFFFF";
-                eveningBtn.style.backgroundColor = "#448899";
-                money.textContent = "新台幣 2500 元";
-            }
-        }).catch((err) => {
-            console.log('錯誤:', err);
-        });
+    let morningBtn = document.querySelector("#morning-btn");
+    let afternoonBtn = document.querySelector("#afternoon-btn");
+    let money = document.querySelector(".money");
+    if (n == 0) {
+        morningBtn.style.backgroundColor = "#448899";
+        afternoonBtn.style.backgroundColor = "#FFFFFF";
+        money.textContent = "新台幣 2000 元";
+    } else if (n == 1) {
+        morningBtn.style.backgroundColor = "#FFFFFF";
+        afternoonBtn.style.backgroundColor = "#448899";
+        money.textContent = "新台幣 2500 元";
+    }
 }
 
 
+function bookingStart() {
+    let date = document.querySelector(".date").value;
+    let time_obj = document.getElementsByName("time");
+    let time = "";
+    for (let i = 0; i < time_obj.length; i++) {
+        if (time_obj[i].checked) {
+            time = time_obj[i].value;
+        }
+    }
+    if (document.querySelector('[name=time]:checked') == null) {
+        time = "morning"
+    }
+    let price;
+    if (time == "morning") {
+        price = 2000;
+    } else if (time == "afternoon") {
+        price = 2500;
+    }
+    if (date == "") {
+        document.querySelector(".nodate").style.display = "block";
+    } else if (date != "") {
+        document.querySelector(".nodate").style.display = "none";
+    }
+    let data = {
+        "attractionId": attractionId,
+        "date": date,
+        "time": time,
+        "price": price
+    }
+    if (attractionId != null && date != "" && time != null && price != null) {
+        fetch('/api/booking', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            })
+        })
+            .then(res => {
+                return res.json();
+            }).then(result => {
+                console.log(result);
+                if (result.error && result.message == "尚未登入系統") {
+                    loginData('login');
+                } else if (result.ok) {
+                    window.location.href = "/booking";
+                } else if (result.error) {
+                    console.log(result.message);
+                }
+            });
+    }
+}
