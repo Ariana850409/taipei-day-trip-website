@@ -2,7 +2,6 @@ from flask import *
 import mysql.connector
 import math
 from config import Config
-from flask import session
 
 app = Flask(__name__)
 app.secret_key = "abcdefghijk"
@@ -23,9 +22,9 @@ userdb = mysql.connector.connect(
     database="User"
 )
 
-mycursor = userdb.cursor()
-mycursor.execute(
-    "CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255),email VARCHAR(255),password VARCHAR(255))")
+# mycursor = userdb.cursor()
+# mycursor.execute(
+#     "CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255),email VARCHAR(255),password VARCHAR(255))")
 
 # Pages
 
@@ -258,6 +257,93 @@ def api_user():
         return Response(json.dumps({
             "ok": True,
         }, sort_keys=False), mimetype="application/json")
+
+
+@app.route("/api/booking", methods=["GET", "POST", "DELETE"])
+def api_booking():
+    if request.method == "GET":
+        loginState = session.get("signin")
+        if loginState != None:
+            attractionId = session.get("attractionId")
+            date = session.get("date")
+            time = session.get("time")
+            price = session.get("price")
+            mycursor = mydb.cursor()
+            mycursor.execute(
+                "SELECT id,name,address,images FROM attractions WHERE id = '{}'".format(attractionId))
+            myresult = mycursor.fetchone()
+            result = None
+            if myresult != None:
+                result = {
+                    "id": myresult[0],
+                    "name": myresult[1],
+                    "address": myresult[2],
+                    "image": myresult[3].split(",")[1]
+                }
+            return Response(json.dumps({
+                "data": {
+                    "attraction": result,
+                    "date": date,
+                    "time": time,
+                    "price": price
+                }
+            }, sort_keys=False), mimetype="application/json")
+
+        if loginState == None:
+            return Response(json.dumps({
+                "error": True,
+                "message": "尚未登入系統"
+            }, sort_keys=False), mimetype="application/json"), 403
+
+    elif request.method == "POST":
+        try:
+            loginState = session.get("signin")
+            if loginState != None:
+                data = request.get_json()
+                attractionId = data["attractionId"]
+                date = data["date"]
+                time = data["time"]
+                price = data["price"]
+                if attractionId != None and date != None and time != None and price != None:
+                    session["attractionId"] = attractionId
+                    session["date"] = date
+                    session["time"] = time
+                    session["price"] = price
+                    session.permanent = True
+                    return Response(json.dumps({
+                        "ok": True
+                    }, sort_keys=False), mimetype="application/json")
+                else:
+                    return Response(json.dumps({
+                        "error": True,
+                        "message": "輸入不正確或其他原因"
+                    }, sort_keys=False), mimetype="application/json"), 400
+            if loginState == None:
+                return Response(json.dumps({
+                    "error": True,
+                    "message": "尚未登入系統"
+                }, sort_keys=False), mimetype="application/json"), 403
+        except:
+            return Response(json.dumps({
+                "error": True,
+                "message": "伺服器內部錯誤"
+            }, sort_keys=False), mimetype="application/json"), 500
+
+    elif request.method == "DELETE":
+        loginState = session.get("signin")
+        if loginState != None:
+            session.pop('attractionId', None)
+            session.pop('date', None)
+            session.pop('time', None)
+            session.pop('price', None)
+            return Response(json.dumps({
+                "ok": True
+            }, sort_keys=False), mimetype="application/json")
+        if loginState == None:
+            return Response(json.dumps({
+                "error": True,
+                "message": "尚未登入系統"
+            }, sort_keys=False), mimetype="application/json"), 403
 
 
 app.run(host="0.0.0.0", port=3000, debug=True)

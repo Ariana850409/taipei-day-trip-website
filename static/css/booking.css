@@ -1,0 +1,152 @@
+main{
+    color: #666666;
+    display: none;
+}
+
+main>div:first-child{
+    width: 980px;
+    margin: 0 auto;
+}
+
+main>div{
+    width: 960px;
+    margin: 0 auto;
+}
+
+main>hr{
+    margin-bottom: 35px;
+}
+
+.booking{
+    position: relative;
+}
+
+.heading{
+    font-weight: bold;
+    font-size: 19px;
+    margin-top: 10px;
+}
+
+.heading-1{
+    margin-bottom: 35px;
+}
+
+.schedule{
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+}
+
+.schedule>img{
+    width: 250px;
+    height: 200px;
+    padding: 0 10px;
+    margin-right: 22px;
+}
+
+.detail>p{
+    font-weight: bold;
+    color: #448899;
+    margin-top: 1px;
+    margin-bottom: 20px;
+}
+
+.detail>div>span:first-child{
+    font-weight: bold;
+}
+
+.detail>div{
+    margin-bottom: 15px;
+}
+
+.booking>img{
+    position: absolute;
+    right: 15px;
+    top: 60px;
+}
+
+.contact>div{
+    margin-bottom: 15px;
+}
+
+main input{
+    width: 200px;
+    height: 38px;
+    border: 1px solid #E8E8E8;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+.contact>p:last-child{
+    font-weight: bold;
+    margin-bottom: 35px;
+}
+
+.payment>div{
+    margin-bottom: 15px;
+}
+
+.payment>div:last-child{
+    margin-bottom: 25px;
+}
+
+.check{
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+}
+
+.check>p{
+    font-weight: bold;
+}
+
+.check-btn{
+    width: 173px;
+    height: 36px;
+    background-color: #448899;
+    border: 0px;
+    border-radius: 5px;
+    color: white;
+    font-size: 19px;
+    margin-bottom: 20px;
+}
+
+@media(max-width:1200px){
+    main>hr{
+        width: 95%;
+    }
+    main>div:first-child{
+        width: 90%;
+    }
+    main>div{
+        width: 90%;
+    }
+    .schedule>img{
+        object-fit: cover;
+    }
+}
+
+@media(max-width:600px){
+    main>div:first-child{
+        width: 95%;
+    }
+    main>div{
+        width: 95%;
+    }
+    .schedule>img{
+        width: 100%;
+        height: 250px;
+        margin: 0;
+        padding: 0;
+    }    
+    .detail{
+        width: 100%;
+    }
+    .detail>p{
+        margin:30px 0;
+    }    
+    .booking>img{
+        right: 0px;
+        top:90%;
+    } 
+}

@@ -128,7 +128,7 @@ input[type="radio"] {
     line-height: 22px;
 }
 
-#evening-btn{
+#afternoon-btn{
     background-color: white;
 }
 
@@ -144,6 +144,14 @@ input[type="radio"] {
     border-radius: 5px;
     color: white;
     font-size: 19px;
+}
+
+.nodate{
+    color: rgb(164, 35, 35);
+    font-size: 14px;
+    vertical-align:bottom;
+    padding-left: 100px;
+    display: none;
 }
 
 hr{

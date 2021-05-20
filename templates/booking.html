@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>預定行程</title>
+    <link type="text/css" href="../static/css/style.css" rel="stylesheet">
+    <link type="text/css" href="../static/css/booking.css" rel="stylesheet">
+</head>
+
+<body onload="bookingData();">
+    <div class="shadow"></div>
+    <div class="login">
+        <div class="login-div"></div>
+        <p class="login-p">登入會員帳號
+            <img src="../static/icon/icon_close.png" class="login-img" onclick="loginData('close');">
+        </p>
+        <input class="login-input" type="text" id="login-email" placeholder="  輸入電子郵件">
+        <input class="login-input" type="password" id="login-password" placeholder="  輸入密碼">
+        <button class="login-btn" id="login-btn" onclick="login();">登入帳戶</button>
+        <div class="error" id="login-error"></div>
+        <p class="login-p2">還沒有帳戶？<span onclick="loginData('register');">點此註冊</span></p>
+    </div>
+    <div class="register">
+        <div class="login-div"></div>
+        <p class="login-p">註冊會員帳號
+            <img src="../static/icon/icon_close.png" class="login-img" onclick="loginData('close');">
+        </p>
+        <input class="login-input" type="text" id="register-name" placeholder="  輸入姓名">
+        <input class="login-input" type="text" id="register-email" placeholder="  輸入電子郵件">
+        <input class="login-input" type="password" id="register-password" placeholder="  輸入密碼">
+        <button class="login-btn" id="register-btn" onclick="register();">註冊新帳戶</button>
+        <div class="error" id="register-error"></div>
+        <div class="error" id="register-success"></div>
+        <p class="login-p2">已經有帳戶了？<span onclick="loginData('login');">點此登入</span></p>
+    </div>
+    <div class="nav-space"></div>
+    <nav class="navbar">
+        <div class="nav-text">
+            <a href="/" style="text-decoration:none;">
+                <div class="header">台北一日遊</div>
+            </a>
+
+            <div class="desktop-menu">
+                <div onclick="booking();">預定行程</div>
+                <div onclick="loginData('login');" id="login-ready">登入/註冊</div>
+                <div onclick="logout();" id="logout-ready">登出系統</div>
+            </div>
+        </div>
+        </div>
+    </nav>
+    <hr size="1px" width="100%" color="#E8E8E8">
+    <main id="main">
+        <div class="booking">
+            <p class="heading heading-1"></p>
+            <div class="schedule">
+                <img id="booking-img">
+                <div class="detail">
+                    <p id="booking-title"></p>
+                    <div>
+                        <span>日期：</span><span id="booking-date"></span>
+                    </div>
+                    <div>
+                        <span>時間：</span><span id="booking-time"></span>
+                    </div>
+                    <div>
+                        <span>費用：</span><span id="booking-price"></span>
+                    </div>
+                    <div>
+                        <span>地點：</span><span id="booking-address"></span>
+                    </div>
+                </div>
+            </div>
+            <img src="../static/icon/icon_delete.png" onclick="bookingDelete();">
+        </div>
+        <hr size="1px" width="1200px" color="#E8E8E8">
+        <div class="contact">
+            <p class="heading">您的聯絡資訊</p>
+            <div>
+                <span>聯絡姓名：</span><input type="text" id="contact-name">
+            </div>
+            <div>
+                <span>聯絡信箱：</span><input type="email" id="contact-email">
+            </div>
+            <div>
+                <span>手機號碼：</span><input type="tel" maxlength="10">
+            </div>
+            <p>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p>
+        </div>
+        <hr size="1px" width="1200px" color="#E8E8E8">
+        <div class="payment">
+            <p class="heading">信用卡付款資訊</p>
+            <div>
+                <span>卡片號碼：</span><input type="text" placeholder="  **** **** **** ****" maxlength="16">
+            </div>
+            <div>
+                <span>過期時間：</span><input type="text" placeholder="  MM / YY" maxlength="5">
+            </div>
+            <div>
+                <span>驗證密碼：</span><input type="text" placeholder="  CVV" maxlength="3">
+            </div>
+        </div>
+        <hr size="1px" width="1200px" color="#E8E8E8">
+        <div class="check">
+            <p id="check-price"></p>
+            <button class="check-btn">確認訂購並付款</button>
+        </div>
+    </main>
+    <div class="footer">COPYRIGHT © 2021 台北一日遊</div>
+    <script type="text/javascript" src="../static/js/attraction.js"></script>
+    <script type="text/javascript" src="../static/js/login.js"></script>
+    <script type="text/javascript" src="../static/js/booking.js"></script>
+
+</body>
+
+</html>

@@ -106,7 +106,22 @@ function logout() {
             return res.json();
         }).then(result => {
             if (result.ok) {
-                window.location.reload()
+                window.location.reload();
+            }
+        });
+}
+
+function booking() {
+    fetch('/api/booking', {
+        method: 'GET',
+    })
+        .then(res => {
+            return res.json();
+        }).then(result => {
+            if (result.error) {
+                loginData('login');
+            } else {
+                window.location.href = "/booking";
             }
         });
 }
