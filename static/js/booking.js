@@ -1,9 +1,9 @@
-function bookingData() {
+async function bookingData() {
     let username;
     let email;
     loginReady = document.getElementById("login-ready");
     logoutReady = document.getElementById("logout-ready");
-    fetch('/api/user', {
+    await fetch('/api/user', {
         method: 'GET',
     })
         .then(res => {
