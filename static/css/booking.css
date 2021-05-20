@@ -1,5 +1,6 @@
 main{
     color: #666666;
+    display: none;
 }
 
 main>div:first-child{

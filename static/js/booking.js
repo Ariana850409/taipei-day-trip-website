@@ -41,6 +41,7 @@ async function bookingData() {
                 let content = document.createElement("p");
                 content.textContent = "目前沒有任何待預訂的行程";
                 cell.appendChild(content);
+                document.getElementById("main").style.display = "block";
             } else if (result.data.date != null) {
                 let spotname = result.data.attraction.name;
                 let address = result.data.attraction.address;
@@ -62,6 +63,7 @@ async function bookingData() {
                 document.getElementById("contact-name").value = username;
                 document.getElementById("contact-email").value = email;
                 document.getElementById("check-price").textContent = "總價：新台幣 " + price + " 元";
+                document.getElementById("main").style.display = "block";
             }
         });
 }
