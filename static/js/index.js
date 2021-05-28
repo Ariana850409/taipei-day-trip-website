@@ -19,7 +19,7 @@ function getData() {
                 cell.textContent = "查無結果";
                 main.appendChild(cell);
             }
-            if (data.data != null || nextPage != null) {
+            if (data.data.length != 0 || nextPage != null) {
                 for (let i = 0; i < data.data.length; i++) {
                     let spotName = data.data[i].name;
                     let firstPic = data.data[i].images[0];
@@ -55,8 +55,8 @@ function getData() {
         };
         req.send();
     };
-    loginReady = document.getElementById("login-ready");
-    logoutReady = document.getElementById("logout-ready");
+    let loginReady = document.getElementById("login-ready");
+    let logoutReady = document.getElementById("logout-ready");
     fetch('/api/user', {
         method: 'GET',
     })
