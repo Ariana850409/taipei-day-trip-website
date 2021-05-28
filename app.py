@@ -32,9 +32,9 @@ orderdb = mysql.connector.connect(
 )
 
 
-mycursor = orderdb.cursor()
-mycursor.execute(
-    "CREATE TABLE orders (bookingNumber VARCHAR(255) PRIMARY KEY, price INT, spotid INT, spotname VARCHAR(255), address VARCHAR(255), image VARCHAR(255), date VARCHAR(255), time VARCHAR(255), username VARCHAR(255), email VARCHAR(255),phone VARCHAR(255), status INT, loginEmail VARCHAR(255))")
+# mycursor = orderdb.cursor()
+# mycursor.execute(
+#     "CREATE TABLE orders (bookingNumber VARCHAR(255) PRIMARY KEY, price INT, spotid INT, spotname VARCHAR(255), address VARCHAR(255), image VARCHAR(255), date VARCHAR(255), time VARCHAR(255), username VARCHAR(255), email VARCHAR(255),phone VARCHAR(255), status INT, loginEmail VARCHAR(255))")
 
 # Pages
 

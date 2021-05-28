@@ -58,18 +58,19 @@ main>hr{
 }
 
 .refund{
-    width: 180px;
+    width: 100%;
     position: absolute;
-    right: 150px;
+    right: 0;
     display: flex;
-    flex-wrap: wrap;
+    align-items: flex-end;
+    flex-direction: column;
 }
 
 .refund>span{
     font-size: 13px;
     color: rgb(164, 35, 35);
     position: absolute;
-    top: 90px;
+    top: 140px;
 }
 
 .refund-btn{
@@ -82,7 +83,7 @@ main>hr{
     font-size: 16px;
     cursor: pointer;
     position: absolute;
-    top: 50px;
+    top: 100px;
 }
 
 
@@ -90,13 +91,6 @@ main>hr{
     main>div:first-child{
         width: 90%;
     }
-    .refund{
-        width: 100%;
-        right: 0px;
-        align-items: flex-end;
-        flex-direction: column;
-    }
-    
     .refund>span{
         top: 180px;
     }
@@ -125,12 +119,6 @@ main>hr{
         height: 300px;
         margin: 0;
     }    
-    .refund{
-        width: 100%;
-        right: 0px;
-        align-items: flex-end;
-        flex-direction: column;
-    }
     .refund>span{
         top: 460px;
     }

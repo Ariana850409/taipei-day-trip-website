@@ -100,20 +100,20 @@ async function hisyoryData() {
                     title.textContent = result.data[i].trip.attraction.name;
                     detail.appendChild(title);
                     let date = document.createElement("div");
-                    date.textContent = result.data[i].trip.date;
+                    date.textContent = "日期: " + result.data[i].trip.date;
                     detail.appendChild(date);
                     let time = document.createElement("div");
                     if (result.data[i].trip.time == "morning") {
-                        time.textContent = "早上 9 點到下午 4 點";
+                        time.textContent = "時間: 早上 9 點到下午 4 點";
                     } else if (result.data[i].trip.time == "afternoon") {
-                        time.textContent = "下午 2 點到晚上 9 點";
+                        time.textContent = "時間: 下午 2 點到晚上 9 點";
                     }
                     detail.appendChild(time);
                     let address = document.createElement("div");
-                    address.textContent = result.data[i].trip.attraction.address;
+                    address.textContent = "地點: " + result.data[i].trip.attraction.address;
                     detail.appendChild(address);
                     let price = document.createElement("div");
-                    price.textContent = "新台幣 " + result.data[i].price + " 元";
+                    price.textContent = "總價: 新台幣 " + result.data[i].price + " 元";
                     detail.appendChild(price);
                     let refund = document.createElement("div");
                     refund.className = "refund";
