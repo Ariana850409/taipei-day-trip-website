@@ -4,12 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>預定行程</title>
+    <title>歷史訂單</title>
     <link type="text/css" href="../static/css/style.css" rel="stylesheet">
     <link type="text/css" href="../static/css/booking.css" rel="stylesheet">
+    <link type="text/css" href="../static/css/thankyou.css" rel="stylesheet">
 </head>
 
-<body onload="bookingData();">
+<body onload="hisyoryData();">
     <div class="shadow"></div>
     <div class="login">
         <div class="login-div"></div>
@@ -41,7 +42,6 @@
             <a href="/" style="text-decoration:none;">
                 <div class="header">台北一日遊</div>
             </a>
-
             <div class="desktop-menu">
                 <div onclick="oldBooking();">歷史訂單</div>
                 <div onclick="booking();">預定行程</div>
@@ -49,74 +49,16 @@
                 <div onclick="logout();" id="logout-ready">登出系統</div>
             </div>
         </div>
-        </div>
     </nav>
     <hr size="1px" width="100%" color="#E8E8E8">
     <main id="main">
-        <div class="booking">
-            <p class="heading heading-1"></p>
-            <div class="schedule">
-                <img id="booking-img">
-                <div class="detail">
-                    <p id="booking-title"></p>
-                    <div>
-                        <span>日期：</span><span id="booking-date"></span>
-                    </div>
-                    <div>
-                        <span>時間：</span><span id="booking-time"></span>
-                    </div>
-                    <div>
-                        <span>費用：</span><span id="booking-price"></span>
-                    </div>
-                    <div>
-                        <span>地點：</span><span id="booking-address"></span>
-                    </div>
-                </div>
-            </div>
-            <img src="../static/icon/icon_delete.png" onclick="bookingDelete();">
-        </div>
+        <div class="heading"></div>
         <hr size="1px" width="1200px" color="#E8E8E8">
-        <div class="contact">
-            <p class="heading">您的聯絡資訊</p>
-            <div>
-                <span>聯絡姓名：</span><input type="text" id="contact-name">
-            </div>
-            <div>
-                <span>聯絡信箱：</span><input type="email" id="contact-email">
-            </div>
-            <div>
-                <span>手機號碼：</span><input type="tel" maxlength="10" id="contact-phone">
-            </div>
-            <p>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p>
-        </div>
-        <hr size="1px" width="1200px" color="#E8E8E8">
-        <div class="payment">
-            <p class="heading">信用卡付款資訊</p>
-            <div>
-                <span>卡片號碼：</span>
-                <div class="tpfield" id="card-number"></div>
-            </div>
-            <div>
-                <span>過期時間：</span>
-                <div class="tpfield" id="card-expiration-date"></div>
-            </div>
-            <div>
-                <span>驗證密碼：</span>
-                <div class="tpfield" id="card-ccv">
-                </div>
-            </div>
-            <hr size="1px" width="1200px" color="#E8E8E8">
-            <div class="check">
-                <p id="check-price"></p>
-                <button class="check-btn" onclick="onSubmit();">確認訂購並付款</button>
-                <p class="payment-error"></p>
-            </div>
+        <div class="booking"></div>
     </main>
     <div class="footer">COPYRIGHT © 2021 台北一日遊</div>
-    <script src="https://js.tappaysdk.com/tpdirect/v5.7.0"></script>
-    <script type="text/javascript" src="../static/js/attraction.js"></script>
     <script type="text/javascript" src="../static/js/login.js"></script>
-    <script type="text/javascript" src="../static/js/booking.js"></script>
+    <script type="text/javascript" src="../static/js/thankyou.js"></script>
 </body>
 
 </html>

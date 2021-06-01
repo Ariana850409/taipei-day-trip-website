@@ -1,0 +1,128 @@
+main>div:first-child{
+    width: 960px;
+    margin: 0 auto;
+    position: relative;
+}
+
+main>hr:nth-child(2){
+    margin-top: 20px;
+}
+
+.heading-1{
+    margin-bottom: 20px;
+}
+
+.number{
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.numberhref{
+    font-weight: bold;
+    margin-bottom: 15px;
+    display: block;
+    text-decoration:none;
+    color: #448899;
+}
+
+.schedule>img{
+    width: 220px;
+    height: 160px;
+    padding: 0;
+    margin-right: 22px;
+    border-radius: 5px;
+}
+
+.history-img{
+    width: 220px;
+    height: 160px;
+    padding: 0;
+    margin-right: 22px;
+    border-radius: 5px;
+}
+
+main>hr{
+    margin-bottom: 20px;
+}
+
+.detail>p{
+    margin-bottom: 10px;
+}
+
+.detail>div:first-child{
+    font-weight: bold;
+}
+
+.detail>div{
+    margin-bottom: 10px;
+}
+
+.refund{
+    width: 100%;
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+}
+
+.refund>span{
+    font-size: 13px;
+    color: rgb(164, 35, 35);
+    position: absolute;
+    top: 140px;
+}
+
+.refund-btn{
+    width: 50px;
+    height: 36px;
+    background-color: #448899;
+    border: 0px;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    position: absolute;
+    top: 100px;
+}
+
+
+@media(max-width:1200px){
+    main>div:first-child{
+        width: 90%;
+    }
+    .refund>span{
+        top: 180px;
+    }
+    
+    .refund-btn{
+        top: 140px;
+    }    
+}
+
+@media(max-width:600px){
+    main>div:first-child{
+        width: 95%;
+    }
+    .schedule>img{
+        object-fit: cover;
+        width: 100%;
+        height: 300px;
+        margin: 0;
+    }
+    .schedule>a{
+        width: 100%;
+    }
+    .history-img{
+        object-fit: cover;
+        width: 100%;
+        height: 300px;
+        margin: 0;
+    }    
+    .refund>span{
+        top: 460px;
+    }
+    .refund-btn{
+        top: 420px;
+    }    
+}

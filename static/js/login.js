@@ -125,3 +125,18 @@ function booking() {
             }
         });
 }
+
+function oldBooking() {
+    fetch('/api/history', {
+        method: 'GET',
+    })
+        .then(res => {
+            return res.json();
+        }).then(result => {
+            if (result.error && result.message == "尚未登入系統") {
+                loginData('login');
+            } else {
+                window.location.href = "/history";
+            }
+        });
+}

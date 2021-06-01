@@ -63,6 +63,7 @@ main>hr{
     position: absolute;
     right: 15px;
     top: 60px;
+    cursor: pointer;
 }
 
 .contact>div{
@@ -75,6 +76,7 @@ main input{
     border: 1px solid #E8E8E8;
     box-sizing: border-box;
     border-radius: 5px;
+    font-size: 16px;
 }
 
 .contact>p:last-child{
@@ -88,6 +90,17 @@ main input{
 
 .payment>div:last-child{
     margin-bottom: 25px;
+}
+
+.tpfield{
+    width: 200px;
+    height: 38px;
+    border: 1px solid #E8E8E8;
+    box-sizing: border-box;
+    border-radius: 5px;
+    display: inline-block;
+    vertical-align:middle;
+    font-size: 16px;
 }
 
 .check{
@@ -109,6 +122,12 @@ main input{
     color: white;
     font-size: 19px;
     margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.payment-error{
+    color: rgb(164, 35, 35);
+    margin: 0;
 }
 
 @media(max-width:1200px){

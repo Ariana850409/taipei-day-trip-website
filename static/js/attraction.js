@@ -39,8 +39,8 @@ function attractionData() {
         }).catch((err) => {
             console.log('錯誤:', err);
         });
-    loginReady = document.getElementById("login-ready");
-    logoutReady = document.getElementById("logout-ready");
+    let loginReady = document.getElementById("login-ready");
+    let logoutReady = document.getElementById("logout-ready");
     fetch('/api/user', {
         method: 'GET',
     })
