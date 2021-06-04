@@ -4,6 +4,7 @@ let finalPage = -1;
 let keyword = "";
 function getData() {
     if (getAPI == false) {
+        document.getElementById("loading").style.display = "block";
         let req = new XMLHttpRequest();
         req.open("get", "/api/attractions?page=" + nextPage + "&keyword=" + keyword);
         req.onload = function () {
@@ -31,6 +32,7 @@ function getData() {
                     cell.className = "box";
                     main.appendChild(cell);
                     let img = document.createElement("img");
+                    img.className = "choosen-div";
                     img.src = firstPic
                     let title = document.createElement("div");
                     title.textContent = spotName;
@@ -51,6 +53,7 @@ function getData() {
                     content.appendChild(cat);
                 };
             }
+            document.getElementById("loading").style.display = "none";
             getAPI = false;
         };
         req.send();

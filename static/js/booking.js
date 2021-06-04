@@ -74,6 +74,7 @@ async function bookingData() {
                 document.getElementById("main").style.display = "block";
             }
         });
+    document.querySelector(".loading-wrap").style.display = "none";
 }
 
 function bookingDelete() {
@@ -137,8 +138,10 @@ TPDirect.card.setup({
 function onSubmit() {
     const tappayStatus = TPDirect.card.getTappayFieldsStatus();
     // console.log(tappayStatus);
-    if (document.getElementById("contact-phone").value == "") {
-        document.querySelector(".payment-error").textContent = "請輸入手機號碼"
+    if (document.getElementById("contact-name").value.indexOf(" ") != -1 || document.getElementById("contact-email").value.indexOf(" ") != -1 || document.getElementById("contact-phone").value.indexOf(" ") != -1) {
+        document.querySelector(".payment-error").textContent = "聯絡資訊請勿輸入空白符號"
+    } else if (document.getElementById("contact-name").value == "" || document.getElementById("contact-email").value == "" || document.getElementById("contact-phone").value == "") {
+        document.querySelector(".payment-error").textContent = "請輸入聯絡資訊"
     } else if (tappayStatus.canGetPrime === false) {
         console.log('can not get prime');
         document.querySelector(".payment-error").textContent = "請確認付款資訊無誤"
@@ -185,8 +188,19 @@ function onSubmit() {
                     return res.json();
                 }).then(result => {
                     if (result.data != null && result.data.payment.status == 0) {
-                        bookingDelete();
-                        window.location.href = "/thankyou?number=" + result.data.number;
+                        let number = result.data.number
+                        fetch('/api/booking', {
+                            method: 'DELETE',
+                        })
+                            .then(res => {
+                                return res.json();
+                            }).then(result => {
+                                if (result.error) {
+                                    loginData('login');
+                                } else if (result.ok) {
+                                    window.location.href = "/thankyou?number=" + number;
+                                }
+                            });
                     } else if (result.data != null && result.data.payment.status != 0) {
                         document.querySelector(".payment-error").textContent = "付款失敗: " + result.data.payment.message
                     } else if (result.error && result.message == "尚未登入系統") {

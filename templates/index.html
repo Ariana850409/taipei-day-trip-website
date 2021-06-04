@@ -17,9 +17,9 @@
         </p>
         <input class="login-input" type="email" id="login-email" placeholder="  輸入電子郵件">
         <input class="login-input" type="password" id="login-password" placeholder="  輸入密碼">
-        <button class="login-btn" id="login-btn" onclick="login();">登入帳戶</button>
+        <button class="login-btn choosen-btn" id="login-btn" onclick="login();">登入帳戶</button>
         <div class="error" id="login-error"></div>
-        <p class="login-p2">還沒有帳戶？<span onclick="loginData('register');">點此註冊</span></p>
+        <p class="login-p2">還沒有帳戶？<span onclick="loginData('register');" class="choosen">點此註冊</span></p>
     </div>
     <div class="register">
         <div class="login-div"></div>
@@ -29,10 +29,10 @@
         <input class="login-input" type="text" id="register-name" placeholder="  輸入姓名">
         <input class="login-input" type="email" id="register-email" placeholder="  輸入電子郵件">
         <input class="login-input" type="password" id="register-password" placeholder="  輸入密碼">
-        <button class="login-btn" id="register-btn" onclick="register();">註冊新帳戶</button>
+        <button class="login-btn choosen-btn" id="register-btn" onclick="register();">註冊新帳戶</button>
         <div class="error" id="register-error"></div>
         <div class="error" id="register-success">註冊成功，請登入系統</div>
-        <p class="login-p2">已經有帳戶了？<span onclick="loginData('login');">點此登入</span></p>
+        <p class="login-p2">已經有帳戶了？<span onclick="loginData('login');" class="choosen">點此登入</span></p>
     </div>
     <div class="nav-space"></div>
     <nav class="navbar">
@@ -41,10 +41,10 @@
                 <div class="header">台北一日遊</div>
             </a>
             <div class="desktop-menu">
-                <div onclick="oldBooking();">歷史訂單</div>
-                <div onclick="booking();">預定行程</div>
-                <div onclick="loginData('login');" id="login-ready">登入/註冊</div>
-                <div onclick="logout();" id="logout-ready">登出系統</div>
+                <div onclick="oldBooking();" class="choosen">歷史訂單</div>
+                <div onclick="booking();" class="choosen">預定行程</div>
+                <div onclick="loginData('login');" id="login-ready" class="choosen">登入/註冊</div>
+                <div onclick="logout();" id="logout-ready" class="choosen">登出系統</div>
             </div>
         </div>
 
@@ -55,7 +55,7 @@
             <div>探索每個角落，體驗城市的深度旅遊行程</div>
             <div class="wrap">
                 <input class="search-bar" type="text" name="search" placeholder="  輸入景點名稱查詢">
-                <button class="search-btn" onclick="keywordData();">
+                <button class="search-btn choosen-div" onclick="keywordData();">
                     <img src="static/icon/icon_search.png">
                 </button>
             </div>
@@ -64,6 +64,16 @@
     </div>
     <main id="main">
     </main>
+    <div id="loading">
+        <div class="demo"></div>
+        <div class="demo"></div>
+        <div class="demo"></div>
+        <div class="demo"></div>
+        <div class="demo"></div>
+        <div class="demo"></div>
+        <div class="demo"></div>
+        <div class="demo"></div>
+    </div>
     <div class="footer">COPYRIGHT © 2021 台北一日遊</div>
     <script type="text/javascript" src="../static/js/index.js"></script>
     <script type="text/javascript" src="../static/js/login.js"></script>

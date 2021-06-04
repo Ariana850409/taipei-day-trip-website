@@ -137,8 +137,5 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-# config.py
-config.py
-
 # nohup.out
 nohup.out
