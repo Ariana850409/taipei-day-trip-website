@@ -551,7 +551,7 @@ def api_order(orderNumber):
                             "id": myresult[2],
                             "name": myresult[3],
                             "address": myresult[4],
-                            "image": myresult[5].replace("http", "https")
+                            "image": myresult[5]
                         },
                         "date": myresult[6],
                         "time": myresult[7]
@@ -604,7 +604,7 @@ def api_history():
                                 "id": x[2],
                                 "name": x[3],
                                 "address": x[4],
-                                "image": x[5].replace("http", "https")
+                                "image": x[5]
                             },
                             "date": x[6],
                             "time": x[7]

@@ -1,5 +1,5 @@
 let path = location.pathname;
-let url = '/api/' + path;
+let url = '/api' + path;
 let attractionId;
 let today;
 function attractionData() {
