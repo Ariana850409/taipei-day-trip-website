@@ -130,7 +130,7 @@ def attractions():
                     "mrt": x[6],
                     "latitude": x[7],
                     "longitude": x[8],
-                    "images": x[9].split(",")[1:]
+                    "images": x[9].replace("http", "https").split(",")[1:]
                 }
                 result.append(y)
                 conn.close()
@@ -176,7 +176,7 @@ def attractions():
                     "mrt": x[6],
                     "latitude": x[7],
                     "longitude": x[8],
-                    "images": x[9].split(",")[1:]
+                    "images": x[9].replace("http", "https").split(",")[1:]
                 }
                 result.append(y)
                 conn.close()
@@ -219,7 +219,7 @@ def attractionId(attractionId):
                 "mrt": myresult[6],
                 "latitude": myresult[7],
                 "longitude": myresult[8],
-                "images": myresult[9].split(",")[1:]
+                "images": myresult[9].replace("http", "https").split(",")[1:]
             }
             return Response(json.dumps({
                 "data": result
@@ -351,7 +351,7 @@ def api_booking():
                     "id": myresult[0],
                     "name": myresult[1],
                     "address": myresult[2],
-                    "image": myresult[3].split(",")[1]
+                    "image": myresult[3].replace("http", "https").split(",")[1]
                 }
             return Response(json.dumps({
                 "data": {
@@ -551,7 +551,7 @@ def api_order(orderNumber):
                             "id": myresult[2],
                             "name": myresult[3],
                             "address": myresult[4],
-                            "image": myresult[5]
+                            "image": myresult[5].replace("http", "https")
                         },
                         "date": myresult[6],
                         "time": myresult[7]
@@ -604,7 +604,7 @@ def api_history():
                                 "id": x[2],
                                 "name": x[3],
                                 "address": x[4],
-                                "image": x[5]
+                                "image": x[5].replace("http", "https")
                             },
                             "date": x[6],
                             "time": x[7]
