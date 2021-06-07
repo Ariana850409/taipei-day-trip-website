@@ -2,6 +2,7 @@ function loginData(state) {
     let shadow = document.querySelector(".shadow");
     let login = document.querySelector(".login");
     let register = document.querySelector(".register");
+    let refundCheck = document.querySelector(".refund-check");
     if (state == "login") {
         shadow.style.display = "block";
         login.style.display = "block";
@@ -14,6 +15,7 @@ function loginData(state) {
         shadow.style.display = "none";
         login.style.display = "none";
         register.style.display = "none";
+        refundCheck.style.display = "none";
     } else {
         console.log("error");
     }
@@ -28,6 +30,12 @@ function register() {
     registerSuccess = document.getElementById("register-success");
     if (registerName.indexOf(" ") != -1 || registerEmail.indexOf(" ") != -1 || registerPassword.indexOf(" ") != -1) {
         registerError.textContent = "請勿輸入空白符號"
+        registerError.style.display = "block";
+    } else if (registerName == "" || registerEmail == "" || registerPassword == "") {
+        registerError.textContent = "請輸入姓名或電子郵件或密碼"
+        registerError.style.display = "block";
+    } else if (registerEmail.indexOf("@") == -1) {
+        registerError.textContent = "請輸入正確的電子郵件格式"
         registerError.style.display = "block";
     } else if (registerName != "" && registerEmail != "" && registerPassword != "") {
         let data = {
@@ -55,10 +63,6 @@ function register() {
                     registerSuccess.style.display = "none";
                 }
             });
-
-    } else if (registerName == "" || registerEmail == "" || registerPassword == "") {
-        registerError.textContent = "請輸入姓名或電子郵件或密碼"
-        registerError.style.display = "block";
     }
 }
 

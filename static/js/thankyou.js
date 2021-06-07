@@ -63,7 +63,9 @@ async function hisyoryData() {
                 window.location.href = "/";
             }
         });
-    fetch("/api/history")
+    fetch("/api/history", {
+        method: 'GET',
+    })
         .then(res => {
             return res.json();
         }).then(result => {
@@ -79,7 +81,7 @@ async function hisyoryData() {
                 for (let i = 0; i < result.data.length; i++) {
                     let booking = document.querySelector(".booking");
                     let numberhref = document.createElement("a");
-                    numberhref.className = "numberhref";
+                    numberhref.className = "numberhref choosen-div";
                     numberhref.textContent = "訂單編號: " + result.data[i].number;
                     numberhref.href = "/thankyou?number=" + result.data[i].number;
                     booking.appendChild(numberhref);
@@ -91,7 +93,7 @@ async function hisyoryData() {
                     schedule.appendChild(spotID);
                     let img = document.createElement("img");
                     img.src = result.data[i].trip.attraction.image;
-                    img.className = "history-img";
+                    img.className = "history-img choosen-div";
                     spotID.appendChild(img);
                     let detail = document.createElement("div");
                     detail.className = "detail";
@@ -119,13 +121,25 @@ async function hisyoryData() {
                     refund.className = "refund";
                     schedule.appendChild(refund);
                     let refundBtn = document.createElement("button");
-                    refundBtn.className = "refund-btn";
+                    refundBtn.className = "refund-btn choosen-btn";
                     refundBtn.textContent = "退款";
+                    refundBtn.setAttribute('id', result.data[i].number)
+                    refundBtn.setAttribute('onclick', 'historyRefund(this)')
                     refund.appendChild(refundBtn);
+                    let alreadyRefund = document.createElement("button");
+                    alreadyRefund.className = "already-refund";
+                    alreadyRefund.textContent = "已退款";
+                    refund.appendChild(alreadyRefund);
                     let refundp = document.createElement("span");
-                    refundp.textContent = "退款最晚請於行程開始前48小時辦理，逾期恕不受理";
-                    refund.appendChild(refundp);
-
+                    if (result.data[i].status == 0) {
+                        refundBtn.style.display = "block";
+                        refundp.textContent = "退款最晚請於行程開始前48小時辦理，逾期恕不受理";
+                        refund.appendChild(refundp);
+                    } else if (result.data[i].status == 2) {
+                        alreadyRefund.style.display = "block";
+                        refundp.textContent = "此行程已退款成功，實際退款日請向發卡銀行確認";
+                        refund.appendChild(refundp);
+                    }
                 };
             } else if (result.error && result.message == "尚未登入系統") {
                 loginData('login');
@@ -138,4 +152,40 @@ async function hisyoryData() {
     document.getElementById("main").style.display = "block";
 
 }
+
+let refundNumber;
+function historyRefund(myObj) {
+    refundNumber = myObj.id;
+    document.querySelector(".refund-check").style.display = "block";
+    document.querySelector(".shadow").style.display = "block";
+}
+
+function doubleCheck() {
+    document.querySelector(".refund-check").style.display = "none";
+    document.querySelector(".shadow").style.display = "none";
+    let data = {
+        "refundNumber": refundNumber
+    };
+    fetch("/api/history", {
+        method: 'DELETE',
+        body: JSON.stringify(data),
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        })
+    })
+        .then(res => {
+            return res.json();
+        }).then(result => {
+            console.log(result);
+            if (result.data != null && result.data.payment.status == 0) {
+                window.location.reload();
+            } else if (result.data != null && result.data.payment.status != 0) {
+                alert('退款失敗 ' + result.data.payment.message);
+            } else if (result.error) {
+                alert('退款失敗');
+                console.log(result.message);
+            }
+        })
+}
+
 

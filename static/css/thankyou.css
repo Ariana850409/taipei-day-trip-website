@@ -1,3 +1,33 @@
+.refund-check{
+    position: fixed;
+    width: 340px;
+    left: 50%;
+    top: 100px;
+    transform: translateX(-50%);
+    background: #FFFFFF;
+    box-shadow: 0px 4px 60px #AAAAAA;
+    border-radius: 6px;
+    z-index: 1001;
+    display: none;
+}
+
+.refund-check>div:nth-child(3){
+    display: flex;
+    justify-content: center;
+}
+
+.refund-check-btn{
+    width: 90px;
+    height: 40px;
+    background: #448899;
+    border-radius: 5px;
+    border: none;
+    margin: 10px 15px 20px 15px;
+    font-size: 19px;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
 main>div:first-child{
     width: 960px;
     margin: 0 auto;
@@ -60,7 +90,6 @@ main>hr{
 .refund{
     width: 100%;
     position: absolute;
-    right: 0;
     display: flex;
     align-items: flex-end;
     flex-direction: column;
@@ -84,6 +113,21 @@ main>hr{
     cursor: pointer;
     position: absolute;
     top: 100px;
+    display: none;
+}
+
+.already-refund{
+    width: 60px;
+    height: 36px;
+    background-color: #a9a9a9;
+    border: 0px;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    position: absolute;
+    top: 100px;
+    display: none;
 }
 
 
@@ -96,6 +140,9 @@ main>hr{
     }
     
     .refund-btn{
+        top: 140px;
+    }    
+    .already-refund{
         top: 140px;
     }    
 }
@@ -123,6 +170,9 @@ main>hr{
         top: 460px;
     }
     .refund-btn{
+        top: 420px;
+    }    
+    .already-refund{
         top: 420px;
     }    
 }

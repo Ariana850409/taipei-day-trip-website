@@ -3,32 +3,69 @@ import mysql.connector
 import math
 import datetime
 import requests
-from config import Config
+from dbutils.pooled_db import PooledDB
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = "abcdefghijk"
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-mydb = mysql.connector.connect(
-    host="localhost",
-    user=Config.db_user,
-    password=Config.db_password,
-    database="Attraction"
+mydbPOOL = PooledDB(
+    creator=mysql.connector,  # 使用連結資料庫的模組
+    maxconnections=10,  # 連線池允許的最大連線數，0和None表示不限制連線數
+    mincached=2,  # 初始化時，連結池中至少建立的空閒的連結，0表示不建立
+    maxcached=5,  # 連結池中最多閒置的連結，0和None不限制
+    maxshared=0,  # 連結池中最多共享的連結數量，0和None表示全部共享。PS: 無用，因為pymysql和MySQLdb等模組的 threadsafety都為1，所有值無論設定為多少，_maxcached永遠為0，所以永遠是所有連結都共享。
+    blocking=True,  # 連線池中如果沒有可用連線後，是否阻塞等待。True，等待；False，不等待然後報錯
+    maxusage=None,  # 一個連結最多被重複使用的次數，None表示無限制
+    setsession=[],  # 開始會話前執行的命令列表。如：["set datestyle to ...", "set time zone ..."]
+    ping=0,
+    # ping MySQL服務端，檢查是否服務可用。# 如：0 = None = never, 1 = default = whenever it is requested, 2 = when a cursor is created, 4 = when a query is executed, 7 = always
+    host='localhost',
+    port=3306,
+    user=os.getenv('db_user'),
+    password=os.getenv('db_password'),
+    database='Attraction',
+    charset='utf8'
 )
 
-userdb = mysql.connector.connect(
-    host="localhost",
-    user=Config.db_user,
-    password=Config.db_password,
-    database="User"
+userdbPOOL = PooledDB(
+    creator=mysql.connector,
+    maxconnections=10,
+    mincached=2,
+    maxcached=5,
+    maxshared=0,
+    blocking=True,
+    maxusage=None,
+    setsession=[],
+    ping=0,
+    host='localhost',
+    port=3306,
+    user=os.getenv('db_user'),
+    password=os.getenv('db_password'),
+    database='User',
+    charset='utf8'
 )
 
-orderdb = mysql.connector.connect(
-    host="localhost",
-    user=Config.db_user,
-    password=Config.db_password,
-    database="Booking"
+orderdbPOOL = PooledDB(
+    creator=mysql.connector,
+    maxconnections=10,
+    mincached=2,
+    maxcached=5,
+    maxshared=0,
+    blocking=True,
+    maxusage=None,
+    setsession=[],
+    ping=0,
+    host='localhost',
+    port=3306,
+    user=os.getenv('db_user'),
+    password=os.getenv('db_password'),
+    database='Booking',
+    charset='utf8'
 )
 
 
@@ -70,7 +107,8 @@ def attractions():
     keyword = request.args.get("keyword", None)
     if keyword == None:
         try:
-            mycursor = mydb.cursor()
+            conn = mydbPOOL.connection()
+            mycursor = conn.cursor()
             # 資料庫筆數
             mycursor.execute("SELECT COUNT(*) FROM attractions")
             count = mycursor.fetchone()
@@ -92,10 +130,10 @@ def attractions():
                     "mrt": x[6],
                     "latitude": x[7],
                     "longitude": x[8],
-                    "images": x[9].split(",")[1:]
+                    "images": x[9].replace("http", "https").split(",")[1:]
                 }
                 result.append(y)
-                mycursor.close()
+                conn.close()
             if totalPage <= page:
                 page = None
                 return Response(json.dumps({
@@ -114,7 +152,8 @@ def attractions():
             }, sort_keys=False), mimetype="application/json"), 500
     else:
         try:
-            mycursor = mydb.cursor()
+            conn = mydbPOOL.connection()
+            mycursor = conn.cursor()
             # keyword總筆數
             mycursor.execute(
                 "SELECT COUNT(*) FROM attractions WHERE name Like '%{}%'".format(keyword))
@@ -137,9 +176,10 @@ def attractions():
                     "mrt": x[6],
                     "latitude": x[7],
                     "longitude": x[8],
-                    "images": x[9].split(",")[1:]
+                    "images": x[9].replace("http", "https").split(",")[1:]
                 }
                 result.append(y)
+                conn.close()
             if totalPage <= page:
                 page = None
                 return Response(json.dumps({
@@ -162,11 +202,12 @@ def attractions():
 def attractionId(attractionId):
     try:
         attractionId = int(attractionId)
-        mycursor = mydb.cursor()
+        conn = mydbPOOL.connection()
+        mycursor = conn.cursor()
         mycursor.execute(
             "SELECT * FROM attractions WHERE id = '{}'".format(attractionId))
         myresult = mycursor.fetchone()
-        mycursor.close()
+        conn.close()
         if myresult != None:
             result = {
                 "id": myresult[0],
@@ -178,7 +219,7 @@ def attractionId(attractionId):
                 "mrt": myresult[6],
                 "latitude": myresult[7],
                 "longitude": myresult[8],
-                "images": myresult[9].split(",")[1:]
+                "images": myresult[9].replace("http", "https").split(",")[1:]
             }
             return Response(json.dumps({
                 "data": result
@@ -200,11 +241,12 @@ def api_user():
     if request.method == "GET":
         loginState = session.get("signin")
         if loginState != None:
-            mycursor = userdb.cursor()
+            conn = userdbPOOL.connection()
+            mycursor = conn.cursor()
             mycursor.execute(
                 "SELECT id,name,email FROM users WHERE email = '{}'".format(loginState))
             myresult = mycursor.fetchone()
-            mycursor.close()
+            conn.close()
             return Response(json.dumps({
                 "data": {
                     "id": myresult[0],
@@ -222,25 +264,32 @@ def api_user():
             registerName = data["name"]
             registerEmail = data["email"]
             registerPassword = data["password"]
-            mycursor = userdb.cursor()
-            mycursor.execute(
-                "SELECT email FROM users WHERE email = '{}'".format(registerEmail))
-            myresult = mycursor.fetchone()
-            if myresult != None:
-                mycursor.close()
+            if registerName == " " or registerEmail == " " or registerPassword == " " or registerName == None or registerEmail == None or registerPassword == None or "@" not in registerEmail:
                 return Response(json.dumps({
                     "error": True,
-                    "message": "此電子郵件已註冊過帳戶"
-                }, sort_keys=False), mimetype="application/json"), 400
-            if myresult == None:
-                ins = "INSERT INTO users (name, email, password) VALUES (%s, %s, %s)"
-                val = (registerName, registerEmail, registerPassword)
-                mycursor.execute(ins, val)
-                userdb.commit()
-                mycursor.close()
-                return Response(json.dumps({
-                    "ok": True
+                    "message": "註冊資料有誤"
                 }, sort_keys=False), mimetype="application/json")
+            else:
+                conn = userdbPOOL.connection()
+                mycursor = conn.cursor()
+                mycursor.execute(
+                    "SELECT email FROM users WHERE email = '{}'".format(registerEmail))
+                myresult = mycursor.fetchone()
+                if myresult != None:
+                    conn.close()
+                    return Response(json.dumps({
+                        "error": True,
+                        "message": "此電子郵件已註冊過帳戶"
+                    }, sort_keys=False), mimetype="application/json"), 400
+                if myresult == None:
+                    ins = "INSERT INTO users (name, email, password) VALUES (%s, %s, %s)"
+                    val = (registerName, registerEmail, registerPassword)
+                    mycursor.execute(ins, val)
+                    conn.commit()
+                    conn.close()
+                    return Response(json.dumps({
+                        "ok": True
+                    }, sort_keys=False), mimetype="application/json")
         except:
             return Response(json.dumps({
                 "error": True,
@@ -252,11 +301,12 @@ def api_user():
             data = request.get_json()
             loginEmail = data["email"]
             loginPassword = data["password"]
-            mycursor = userdb.cursor()
+            conn = userdbPOOL.connection()
+            mycursor = conn.cursor()
             mycursor.execute(
                 "SELECT email,password FROM users WHERE email = '{}'".format(loginEmail))
             myresult = mycursor.fetchone()
-            mycursor.close()
+            conn.close()
             if myresult != None and myresult[1] == loginPassword:
                 session["signin"] = myresult[0]
                 session.permanent = True
@@ -289,18 +339,19 @@ def api_booking():
             date = session.get("date")
             time = session.get("time")
             price = session.get("price")
-            mycursor = mydb.cursor()
+            conn = mydbPOOL.connection()
+            mycursor = conn.cursor()
             mycursor.execute(
                 "SELECT id,name,address,images FROM attractions WHERE id = '{}'".format(attractionId))
             myresult = mycursor.fetchone()
-            mycursor.close()
+            conn.close()
             result = None
             if myresult != None:
                 result = {
                     "id": myresult[0],
                     "name": myresult[1],
                     "address": myresult[2],
-                    "image": myresult[3].split(",")[1]
+                    "image": myresult[3].replace("http", "https").split(",")[1]
                 }
             return Response(json.dumps({
                 "data": {
@@ -387,67 +438,87 @@ def api_orders():
             contactName = data["order"]["contact"]["name"]
             contactEmail = data["order"]["contact"]["email"]
             contactPhone = data["order"]["contact"]["phone"]
-            # payStatus 0:已付款 1:未付款
+            # payStatus 0:已付款 1:未付款 2:已退款
             payStatus = 1
-            try:
-                mycursor = orderdb.cursor()
-                ins = "INSERT INTO orders (bookingNumber, price, spotid, spotname, address, image, date, time, username, email, phone, status, loginEmail) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-                val = (bookingNumber, price, spotid, spotname, address, image,
-                       date, time, contactName, contactEmail, contactPhone, payStatus, loginState)
-                mycursor.execute(ins, val)
-                orderdb.commit()
-                mycursor.close()
-                # pay by prime request
-                payurl = 'https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime'
-                payheader = {
-                    'x-api-key': 'partner_3ISP4Ya9mjKSwXMHEVXexO5cvmlRScAJmJYn3LRxyHPh5XzwRDBdnNpV'}
-                paydata = {
-                    "prime": prime,
-                    "partner_key": 'partner_3ISP4Ya9mjKSwXMHEVXexO5cvmlRScAJmJYn3LRxyHPh5XzwRDBdnNpV',
-                    "merchant_id": "Ariana0409_TAISHIN",
-                    "details": "TapPay Test",
-                    "amount": price,
-                    "cardholder": {
-                        "phone_number": contactPhone,
-                        "name": contactName,
-                        "email": contactEmail
-                    }
-                }
-                payrequest = requests.post(
-                    payurl, headers=payheader, json=paydata)
-                payresponse = json.loads(payrequest.text)
-                getstatus = payresponse['status']
-                getmsg = payresponse['msg']
-                if getstatus == 0:
-                    mycursor = orderdb.cursor()
-                    mycursor.execute(
-                        "UPDATE orders SET status = {} WHERE bookingNumber = '{}'".format(0, bookingNumber))
-                    orderdb.commit()
-                    mycursor.close()
-                    return Response(json.dumps({
-                        "data": {
-                            "number": bookingNumber,
-                            "payment": {
-                                "status": 0,
-                                "message": "付款成功"
-                            }
-                        }
-                    }, sort_keys=False), mimetype="application/json")
-                else:
-                    return Response(json.dumps({
-                        "data": {
-                            "number": bookingNumber,
-                            "payment": {
-                                "status": getstatus,
-                                "message": getmsg
-                            }
-                        }
-                    }, sort_keys=False), mimetype="application/json")
-            except:
+            checkdate = datetime.datetime.strptime(date, '%Y-%m-%d')
+            if checkdate < today or date == " " or date == None:
                 return Response(json.dumps({
                     "error": True,
-                    "message": "訂單建立失敗"
-                }, sort_keys=False), mimetype="application/json"), 400
+                    "message": "行程日期有誤"
+                }, sort_keys=False), mimetype="application/json")
+            elif "morning" not in time and "afternoon" not in time:
+                return Response(json.dumps({
+                    "error": True,
+                    "message": "行程時間有誤"
+                }, sort_keys=False), mimetype="application/json")
+            elif contactName == " " or contactEmail == " " or contactPhone == " " or contactName == None or contactEmail == None or contactPhone == None or "@" not in contactEmail:
+                return Response(json.dumps({
+                    "error": True,
+                    "message": "聯絡資訊有誤"
+                }, sort_keys=False), mimetype="application/json")
+            else:
+                try:
+                    conn = orderdbPOOL.connection()
+                    mycursor = conn.cursor()
+                    ins = "INSERT INTO orders (bookingNumber, price, spotid, spotname, address, image, date, time, username, email, phone, status, loginEmail) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                    val = (bookingNumber, price, spotid, spotname, address, image,
+                           date, time, contactName, contactEmail, contactPhone, payStatus, loginState)
+                    mycursor.execute(ins, val)
+                    conn.commit()
+                    conn.close()
+                    # pay by prime request
+                    payurl = 'https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime'
+                    payheader = {
+                        'x-api-key': os.getenv('partner_key')}
+                    paydata = {
+                        "prime": prime,
+                        "partner_key": os.getenv('partner_key'),
+                        "merchant_id": "Ariana0409_TAISHIN",
+                        "details": "TapPay Test",
+                        "amount": price,
+                        "cardholder": {
+                            "phone_number": contactPhone,
+                            "name": contactName,
+                            "email": contactEmail
+                        }
+                    }
+                    payrequest = requests.post(
+                        payurl, headers=payheader, json=paydata)
+                    payresponse = json.loads(payrequest.text)
+                    getstatus = payresponse['status']
+                    getmsg = payresponse['msg']
+                    gettrade = payresponse['rec_trade_id']
+                    if getstatus == 0:
+                        conn = orderdbPOOL.connection()
+                        mycursor = conn.cursor()
+                        mycursor.execute(
+                            "UPDATE orders SET status = {},tradeID = '{}' WHERE bookingNumber = '{}'".format(0, gettrade, bookingNumber))
+                        conn.commit()
+                        conn.close()
+                        return Response(json.dumps({
+                            "data": {
+                                "number": bookingNumber,
+                                "payment": {
+                                    "status": 0,
+                                    "message": "付款成功"
+                                }
+                            }
+                        }, sort_keys=False), mimetype="application/json")
+                    else:
+                        return Response(json.dumps({
+                            "data": {
+                                "number": bookingNumber,
+                                "payment": {
+                                    "status": getstatus,
+                                    "message": getmsg
+                                }
+                            }
+                        }, sort_keys=False), mimetype="application/json")
+                except:
+                    return Response(json.dumps({
+                        "error": True,
+                        "message": "訂單建立失敗"
+                    }, sort_keys=False), mimetype="application/json"), 400
         if loginState == None:
             return Response(json.dumps({
                 "error": True,
@@ -465,11 +536,12 @@ def api_order(orderNumber):
     try:
         loginState = session.get("signin")
         if loginState != None:
-            mycursor = orderdb.cursor()
+            conn = orderdbPOOL.connection()
+            mycursor = conn.cursor()
             mycursor.execute(
                 "SELECT * FROM orders WHERE bookingNumber = '{}'".format(orderNumber))
             myresult = mycursor.fetchone()
-            mycursor.close()
+            conn.close()
             if myresult != None:
                 result = {
                     "number": myresult[0],
@@ -511,46 +583,111 @@ def api_order(orderNumber):
         }, sort_keys=False), mimetype="application/json"), 500
 
 
-@app.route("/api/history")
+@app.route("/api/history", methods=["GET", "DELETE"])
 def api_history():
-    try:
-        loginState = session.get("signin")
-        if loginState != None:
-            mycursor = orderdb.cursor()
-            mycursor.execute(
-                "SELECT bookingNumber, price, spotid, spotname, address, image, date, time FROM orders WHERE loginEmail = '{}' AND status = 0".format(loginState))
-            myresult = mycursor.fetchall()
-            result = []
-            for x in myresult:
-                y = {
-                    "number": x[0],
-                    "price": x[1],
-                    "trip": {
-                        "attraction": {
-                            "id": x[2],
-                            "name": x[3],
-                            "address": x[4],
-                            "image": x[5]
+    if request.method == "GET":
+        try:
+            loginState = session.get("signin")
+            if loginState != None:
+                conn = orderdbPOOL.connection()
+                mycursor = conn.cursor()
+                mycursor.execute(
+                    "SELECT bookingNumber, price, spotid, spotname, address, image, date, time, status FROM orders WHERE loginEmail = '{}' AND status = 0 OR status = 2".format(loginState))
+                myresult = mycursor.fetchall()
+                result = []
+                for x in myresult:
+                    y = {
+                        "number": x[0],
+                        "price": x[1],
+                        "trip": {
+                            "attraction": {
+                                "id": x[2],
+                                "name": x[3],
+                                "address": x[4],
+                                "image": x[5]
+                            },
+                            "date": x[6],
+                            "time": x[7]
                         },
-                        "date": x[6],
-                        "time": x[7]
-                    },
-                }
-                result.append(y)
-            mycursor.close()
-            return Response(json.dumps({
-                "data": result
-            }, sort_keys=False), mimetype="application/json")
-        if loginState == None:
+                        "status": x[8]
+                    }
+                    result.append(y)
+                conn.close()
+                return Response(json.dumps({
+                    "data": result
+                }, sort_keys=False), mimetype="application/json")
+            if loginState == None:
+                return Response(json.dumps({
+                    "error": True,
+                    "message": "尚未登入系統"
+                }, sort_keys=False), mimetype="application/json"), 403
+        except:
             return Response(json.dumps({
                 "error": True,
-                "message": "尚未登入系統"
-            }, sort_keys=False), mimetype="application/json"), 403
-    except:
-        return Response(json.dumps({
-            "error": True,
-            "message": "伺服器內部錯誤"
-        }, sort_keys=False), mimetype="application/json"), 500
+                "message": "伺服器內部錯誤"
+            }, sort_keys=False), mimetype="application/json"), 500
+
+    elif request.method == "DELETE":
+        try:
+            data = request.get_json()
+            refundNumber = data["refundNumber"]
+            conn = orderdbPOOL.connection()
+            mycursor = conn.cursor()
+            mycursor.execute(
+                "SELECT tradeID FROM orders WHERE bookingNumber = '{}'".format(refundNumber))
+            myresult = mycursor.fetchone()
+            tradeID = myresult[0]
+            conn.close()
+            if myresult != None:
+                # refund request
+                refundurl = 'https://sandbox.tappaysdk.com/tpc/transaction/refund'
+                refundheader = {
+                    'x-api-key': os.getenv('partner_key')}
+                refunddata = {
+                    "partner_key": os.getenv('partner_key'),
+                    "rec_trade_id": tradeID
+                }
+                refundrequest = requests.post(
+                    refundurl, headers=refundheader, json=refunddata)
+                refundresponse = json.loads(refundrequest.text)
+                getstatus = refundresponse['status']
+                getmsg = refundresponse['msg']
+                if getstatus == 0:
+                    conn = orderdbPOOL.connection()
+                    mycursor = conn.cursor()
+                    mycursor.execute(
+                        "UPDATE orders SET status = {} WHERE tradeID = '{}'".format(2, tradeID))
+                    conn.commit()
+                    conn.close()
+                    return Response(json.dumps({
+                        "data": {
+                            "number": refundNumber,
+                            "payment": {
+                                "status": 0,
+                                "message": "退款成功"
+                            }
+                        }
+                    }, sort_keys=False), mimetype="application/json")
+                else:
+                    return Response(json.dumps({
+                        "data": {
+                            "number": refundNumber,
+                            "payment": {
+                                "status": getstatus,
+                                "message": getmsg
+                            }
+                        }
+                    }, sort_keys=False), mimetype="application/json")
+            else:
+                return Response(json.dumps({
+                    "error": True,
+                    "message": "查找退款訂單失敗"
+                }, sort_keys=False), mimetype="application/json")
+        except:
+            return Response(json.dumps({
+                "error": True,
+                "message": "伺服器內部錯誤"
+            }, sort_keys=False), mimetype="application/json"), 500
 
 
 app.run(host="0.0.0.0", port=3000, debug=True)

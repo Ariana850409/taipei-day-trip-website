@@ -1,6 +1,7 @@
 let path = location.pathname;
-let url = '/api/' + path;
+let url = '/api' + path;
 let attractionId;
+let today;
 function attractionData() {
     fetch(url, {})
         .then(res => {
@@ -63,7 +64,10 @@ function attractionData() {
             month = "0" + month;
         }
         let date = date_now.getDate();
-        let today = year + "-" + month + "-" + date
+        if (date < 10) {
+            date = "0" + date;
+        }
+        today = year + "-" + month + "-" + date
         document.querySelector('.date').setAttribute('min', today);
     }
     minDate();
@@ -141,34 +145,37 @@ function bookingStart() {
     }
     if (date == "") {
         document.querySelector(".nodate").style.display = "block";
-    } else if (date != "") {
+    } else if (date < today) {
+        document.querySelector(".nodate").textContent = "請勿選取先前日期";
+        document.querySelector(".nodate").style.display = "block";
+    } else if (date >= today && date != "") {
         document.querySelector(".nodate").style.display = "none";
-    }
-    let data = {
-        "attractionId": attractionId,
-        "date": date,
-        "time": time,
-        "price": price
-    }
-    if (attractionId != null && date != "" && time != null && price != null) {
-        fetch('/api/booking', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: new Headers({
-                'Content-Type': 'application/json'
+        let data = {
+            "attractionId": attractionId,
+            "date": date,
+            "time": time,
+            "price": price
+        }
+        if (attractionId != null && date != "" && time != null && price != null) {
+            fetch('/api/booking', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                })
             })
-        })
-            .then(res => {
-                return res.json();
-            }).then(result => {
-                console.log(result);
-                if (result.error && result.message == "尚未登入系統") {
-                    loginData('login');
-                } else if (result.ok) {
-                    window.location.href = "/booking";
-                } else if (result.error) {
-                    console.log(result.message);
-                }
-            });
+                .then(res => {
+                    return res.json();
+                }).then(result => {
+                    console.log(result);
+                    if (result.error && result.message == "尚未登入系統") {
+                        loginData('login');
+                    } else if (result.ok) {
+                        window.location.href = "/booking";
+                    } else if (result.error) {
+                        console.log(result.message);
+                    }
+                });
+        }
     }
 }

@@ -35,6 +35,11 @@
     background-color:transparent;
     border-style:none;
     opacity: 0.7;
+    cursor: pointer;
+}
+
+#left-btn:hover{
+    opacity: 0.5;
 }
 
 #right-btn{
@@ -44,6 +49,11 @@
     background-color:transparent;
     border-style:none;
     opacity: 0.7;
+    cursor: pointer;
+}
+
+#right-btn:hover{
+    opacity: 0.5;
 }
 
 .dots{
@@ -107,6 +117,7 @@
 .date{
     border: none;
     padding: 7px;
+    cursor: text;
 }
 
 .tour>div>label{
@@ -126,6 +137,7 @@ input[type="radio"] {
     border: 2px solid #FFFFFF;
     vertical-align:bottom;
     line-height: 22px;
+    cursor: pointer;
 }
 
 #afternoon-btn{
