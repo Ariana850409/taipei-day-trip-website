@@ -35,29 +35,21 @@
         <div class="error" id="register-success"></div>
         <p class="login-p2">已經有帳戶了？<span onclick="loginData('login');" class="choosen">點此登入</span></p>
     </div>
-    <div class="mobile-menu">
-        <div onclick="oldBooking();" class="choosen">歷史訂單</div>
-        <div onclick="booking();" class="choosen">預定行程</div>
-        <div onclick="loginData('login');" id="login-ready" class="choosen">登入/註冊</div>
-        <div onclick="logout();" id="logout-ready" class="choosen">登出系統</div>
-    </div>
     <div class="nav-space"></div>
     <nav class="navbar">
         <div class="nav-text">
             <a href="/" style="text-decoration:none;">
                 <div class="header">台北一日遊</div>
             </a>
-
             <div class="desktop-menu">
                 <div onclick="oldBooking();" class="choosen">歷史訂單</div>
                 <div onclick="booking();" class="choosen">預定行程</div>
-                <div onclick="loginData('login');" id="login-ready" class="choosen">登入/註冊</div>
-                <div onclick="logout();" id="logout-ready" class="choosen">登出系統</div>
+                <div onclick="loginData('login');" class="choosen login-ready">登入/註冊</div>
+                <div onclick="logout();" class="choosen logout-ready">登出系統</div>
             </div>
             <div onclick="mobileTrigger();" show="off" class="mobile-div">
                 <img src="../static/icon/menu.png" class="mobile-btn">
             </div>
-
         </div>
     </nav>
     <hr size="1px" width="100%" color="#E8E8E8">

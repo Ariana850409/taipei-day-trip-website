@@ -1,8 +1,8 @@
 let username;
 let bookingNumber = window.location.search.substr(8, 17);
 async function thankyouData() {
-    let loginReady = document.getElementById("login-ready");
-    let logoutReady = document.getElementById("logout-ready");
+    let loginReady = document.querySelector(".login-ready");
+    let logoutReady = document.querySelector(".logout-ready");
     await fetch('/api/user', {
         method: 'GET',
     })
@@ -47,8 +47,8 @@ async function thankyouData() {
 }
 
 async function hisyoryData() {
-    let loginReady = document.getElementById("login-ready");
-    let logoutReady = document.getElementById("logout-ready");
+    let loginReady = document.querySelector(".login-ready");
+    let logoutReady = document.querySelector(".logout-ready");
     await fetch('/api/user', {
         method: 'GET',
     })
