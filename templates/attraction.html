@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>景點介紹</title>
     <link type="text/css" href="../static/css/style.css" rel="stylesheet">
     <link type="text/css" href="../static/css/attraction.css" rel="stylesheet">
@@ -36,6 +35,12 @@
         <div class="error" id="register-success"></div>
         <p class="login-p2">已經有帳戶了？<span onclick="loginData('login');" class="choosen">點此登入</span></p>
     </div>
+    <div class="mobile-menu">
+        <div onclick="oldBooking();" class="choosen">歷史訂單</div>
+        <div onclick="booking();" class="choosen">預定行程</div>
+        <div onclick="loginData('login');" id="login-ready" class="choosen">登入/註冊</div>
+        <div onclick="logout();" id="logout-ready" class="choosen">登出系統</div>
+    </div>
     <div class="nav-space"></div>
     <nav class="navbar">
         <div class="nav-text">
@@ -49,7 +54,10 @@
                 <div onclick="loginData('login');" id="login-ready" class="choosen">登入/註冊</div>
                 <div onclick="logout();" id="logout-ready" class="choosen">登出系統</div>
             </div>
-        </div>
+            <div onclick="mobileTrigger();" show="off" class="mobile-div">
+                <img src="../static/icon/menu.png" class="mobile-btn">
+            </div>
+
         </div>
     </nav>
     <hr size="1px" width="100%" color="#E8E8E8">

@@ -4,6 +4,7 @@ function loginData(state) {
     let register = document.querySelector(".register");
     let refundCheck = document.querySelector(".refund-check");
     if (state == "login") {
+        document.querySelector('.mobile-menu').style.display = 'none';
         shadow.style.display = "block";
         login.style.display = "block";
         register.style.display = "none";
@@ -123,6 +124,7 @@ function booking() {
             return res.json();
         }).then(result => {
             if (result.error) {
+                document.querySelector('.mobile-menu').style.display = 'none';
                 loginData('login');
             } else {
                 window.location.href = "/booking";
@@ -138,9 +140,21 @@ function oldBooking() {
             return res.json();
         }).then(result => {
             if (result.error && result.message == "尚未登入系統") {
+                document.querySelector('.mobile-menu').style.display = 'none';
                 loginData('login');
             } else {
                 window.location.href = "/history";
             }
         });
+}
+
+function mobileTrigger() {
+    let mobileDiv = document.querySelector('.mobile-div').getAttribute('show');
+    if (mobileDiv == 'off') {
+        document.querySelector('.mobile-menu').style.display = 'block';
+        document.querySelector('.mobile-div').setAttribute('show', 'on');
+    } else if (mobileDiv == 'on') {
+        document.querySelector('.mobile-menu').style.display = 'none';
+        document.querySelector('.mobile-div').setAttribute('show', 'off');
+    }
 }
