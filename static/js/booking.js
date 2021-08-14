@@ -8,8 +8,8 @@ let price;
 async function bookingData() {
     let username;
     let email;
-    let loginReady = document.getElementById("login-ready");
-    let logoutReady = document.getElementById("logout-ready");
+    let loginReady = document.querySelector(".login-ready");
+    let logoutReady = document.querySelector(".logout-ready");
     await fetch('/api/user', {
         method: 'GET',
     })

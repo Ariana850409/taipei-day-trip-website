@@ -592,26 +592,27 @@ def api_history():
                 conn = orderdbPOOL.connection()
                 mycursor = conn.cursor()
                 mycursor.execute(
-                    "SELECT bookingNumber, price, spotid, spotname, address, image, date, time, status FROM orders WHERE loginEmail = '{}' AND status = 0 OR status = 2".format(loginState))
+                    "SELECT bookingNumber, price, spotid, spotname, address, image, date, time, status FROM orders WHERE loginEmail = '{}'".format(loginState))
                 myresult = mycursor.fetchall()
                 result = []
                 for x in myresult:
-                    y = {
-                        "number": x[0],
-                        "price": x[1],
-                        "trip": {
-                            "attraction": {
-                                "id": x[2],
-                                "name": x[3],
-                                "address": x[4],
-                                "image": x[5]
+                    if x[8] != 1:
+                        y = {
+                            "number": x[0],
+                            "price": x[1],
+                            "trip": {
+                                "attraction": {
+                                    "id": x[2],
+                                    "name": x[3],
+                                    "address": x[4],
+                                    "image": x[5]
+                                },
+                                "date": x[6],
+                                "time": x[7]
                             },
-                            "date": x[6],
-                            "time": x[7]
-                        },
-                        "status": x[8]
-                    }
-                    result.append(y)
+                            "status": x[8]
+                        }
+                        result.append(y)
                 conn.close()
                 return Response(json.dumps({
                     "data": result

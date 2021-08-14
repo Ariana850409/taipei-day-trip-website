@@ -230,6 +230,14 @@ body{
     display: flex;
 }
 
+.desktop-menu.open{
+    display: flex;
+}
+
+.mobile-div{
+    position: absolute;
+    display: none;
+}
 .desktop-menu>div{
     margin-right: 20px;
     cursor: pointer;
@@ -247,11 +255,11 @@ body{
     opacity: 0.8;
 }
 
-#login-ready{
+.login-ready{
     display: none;
 }
 
-#logout-ready{
+.logout-ready{
     display: none;
 }
 
@@ -424,8 +432,36 @@ main>.box>.title{
 }
 
 @media(max-width:600px){
-    .nav-text{
-        width: 100%;
+    .desktop-menu{
+        display: none;
+        background-color: rgb(255, 255, 255);
+        width: 60%;
+        height: 100%;
+        position: fixed;  
+        right: 0;
+        opacity: 0.85;
+        text-align: center;
+    }
+    .desktop-menu.open{
+        display: block;
+    }
+    .mobile-div{
+        position: absolute;
+        display: block;
+        right: 5px;
+    }    
+    .mobile-btn{
+        height: 54px;
+        opacity: 0.7;
+        padding-right: 5px;
+    }    
+    .desktop-menu>div{
+        color: rgb(48, 47, 47);
+        font-size: 30px;
+        margin: 10px 0;
+    }
+    .desktop-menu>div:first-child{
+        padding-top: 54px;
     }
     main>.box{
         width: 90%;
