@@ -10,10 +10,10 @@ Card number: 4242-4242-4242-4242</br>
 Expiration date: 01/23</br>
 CVV: 123
 
-## System Structure
+## Architecture
 ![structre](https://user-images.githubusercontent.com/73774991/129444488-b83567b2-eefe-4675-aacb-5048fccd31f6.png)
 
-## Database Structure (MySQL)
+## Database Schema (MySQL)
 ![database](https://user-images.githubusercontent.com/73774991/129444486-f246324a-2112-4c9a-9c7d-185a124bedd8.png)
 
 ## Main Features
